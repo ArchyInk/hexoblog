@@ -8,12 +8,12 @@
   <meta name="google-site-verification" content="" />
   <meta name="referrer" content="unsafe-url">
   
-  <title>xmrig挖矿病毒</title>
+  <title>antd-tools中的gulp</title>
   <meta name="author" content="Archy">
   <meta name="description" content="archy的博客，写点东西">
   
   
-  <meta property="og:title" content="xmrig挖矿病毒"/>
+  <meta property="og:title" content="antd-tools中的gulp"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:site_name" content="ArchyInk"/>
   <link href="/apple-touch-icon-precomposed.png" sizes="180x180" rel="apple-touch-icon-precomposed">
@@ -47,14 +47,14 @@
       
   
     <h1 class="page-title center">
-        xmrig挖矿病毒
+        antd-tools中的gulp
     </h1>
   
 
 
     </div>
     <div class="meta center">
-      <time datetime="2021-07-22T02:04:03.000Z" itemprop="datePublished">
+      <time datetime="2021-07-22T07:14:23.000Z" itemprop="datePublished">
   <svg class="i-calendar" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
     <path d="M2 6 L2 30 30 30 30 6 Z M2 15 L30 15 M7 3 L7 9 M13 3 L13 9 M19 3 L19 9 M25 3 L25 9"></path>
   </svg>
@@ -73,7 +73,7 @@
       <path d="M2 18 L18 2 30 2 30 14 14 30 Z"></path>
     </svg>
     &nbsp;
-    <a href="/tags/服务器/">服务器</a>·<a href="/tags/记事/">记事</a>
+    <a href="/tags/AntDesignVue源码学习/">AntDesignVue源码学习</a>·<a href="/tags/前端/">前端</a>·<a href="/tags/node/">node</a>
 
 
     </div>
@@ -84,18 +84,33 @@
     <div class="picture-container">
       
     </div>
-    <p>昨天博客搭完突然连不上服务器了，开始以为是网的问题，后来查看阿里控制台，发现内存占用达到100%</p>
-<p><img src="/images/0722_1.jpg" alt="阿里云控制台图片"></p>
-<p>心想可能中病毒了，好不容易连接上服务器，输入</p>
-<p><code>[root@archyInk]# top</code> </p>
-<p><img src="/images/0722_2.jpg" alt="大战过后，只有到网上找图了"><br>发现一个叫xmrig的进程占用了100%，查了一下是挖矿病毒。</p>
-<p>气死了，矿佬连我2g小水管都不放过。</p>
-<p>kill进程发现没啥用，会自动重启</p>
-<p>查了下网上同样的情况，一般都是在docker容器中运行的，但是我没有用过docker，所以推测是直接植入的程序，于是输入<code>ll /proc/14454/exe</code>中间是pid找到进程的程序，是一个叫skypool的文件夹，搜了一个是一个叫天池的矿池。</p>
-<p>于是我直接把这个文件夹<code>rm -rf</code>了，然后直接重启服务器</p>
-<p>果然病毒没有重启了</p>
-<p>花了我不少时间，气死我了，不让我买电脑就算了，还搞这档事，矿佬都给我去SPA。</p>
-<p>最后把skypool的自启动删除了，具体的我也是查的</p>
+    <p>首先三连</p>
+<p><code>npm install --global gulp-cli</code></p>
+<p><code>npm install --save-dev gulp</code></p>
+<p><code>gulp --version</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;gulp --version</span><br><span class="line">CLI version: 2.3.0</span><br><span class="line">Local version: 4.0.2</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>测试</strong></p>
+<p>创建gulpfile.js文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function defaultTask(cb) &#123;</span><br><span class="line">  // place code for your default task here</span><br><span class="line">  cb();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">exports.default = defaultTask</span><br></pre></td></tr></table></figure>
+
+<p>在该目录下</p>
+<p><code>&gt;gulp</code></p>
+<p>如需运行多个任务（task），可以执行 <code>gulp &lt;task&gt; &lt;othertask&gt;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;gulp</span><br><span class="line">[14:31:47] Using gulpfile D:\sgd_cd_pro\test\node\gulpfile.js</span><br><span class="line">[14:31:47] Starting &#x27;default&#x27;...</span><br><span class="line">[14:31:47] Finished &#x27;default&#x27; after 1.69 ms</span><br></pre></td></tr></table></figure>
+
+<p><strong>gulp和webpack的区别</strong></p>
+<p>gulp注重前端开发流程，将我们重复繁琐的工作自动化执行和打包。</p>
+<p>webpack注重模块化开发，把所有的文件模块化。</p>
+<p>懂这个区别，也就大概能看懂AntDesignVue源码中使用gulp的意义了</p>
+<p><strong>runTask</strong></p>
+<p>Ant Design Vue里面有这样一个方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function runTask(toRun) &#123;</span><br><span class="line">  const metadata = &#123; task: toRun &#125;;</span><br><span class="line">  // Gulp &gt;= 4.0.0 (doesn&#x27;t support events)</span><br><span class="line">  const taskInstance = gulp.task(toRun);</span><br><span class="line">  if (taskInstance === undefined) &#123;</span><br><span class="line">    gulp.emit(&#x27;task_not_found&#x27;, metadata);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  const start = process.hrtime();</span><br><span class="line">  gulp.emit(&#x27;task_start&#x27;, metadata);</span><br><span class="line">  try &#123;</span><br><span class="line">    taskInstance.apply(gulp);</span><br><span class="line">    metadata.hrDuration = process.hrtime(start);</span><br><span class="line">    gulp.emit(&#x27;task_stop&#x27;, metadata);</span><br><span class="line">    gulp.emit(&#x27;stop&#x27;);</span><br><span class="line">  &#125; catch (err) &#123;</span><br><span class="line">    err.hrDuration = process.hrtime(start);</span><br><span class="line">    err.task = metadata.task;</span><br><span class="line">    gulp.emit(&#x27;task_err&#x27;, err);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数名语义是执行任务，这个方法就是将命令行参数转换为gulp中的task即任务执行</p>
+<p>所以后面我们来一个一个理解antd-tools这里面的工具有什么作用</p>
 
 
   </article>
