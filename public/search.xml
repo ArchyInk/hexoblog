@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>开发cli必备的commander工具</title>
+      <link href="/commander/"/>
+      <url>/commander/</url>
+      
+        <content type="html"><![CDATA[<p>开发cli必备</p><p>文档，竟然有中文，对我这种四级都没过得辣鸡太友好了</p><p><a href="https://github.com/tj/commander.js/blob/master/Readme_zh-CN.md">Commander.js</a></p><p>首先</p><h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install commander</span><br></pre></td></tr></table></figure><h2 id="Declaring"><a href="#Declaring" class="headerlink" title="Declaring"></a>Declaring</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const &#123; program &#125; = require(&#x27;commander&#x27;);</span><br></pre></td></tr></table></figure><h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h3 id="version"><a href="#version" class="headerlink" title="version"></a>version</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">program.version(&#x27;0.0.1&#x27;).parse(process.argv);</span><br><span class="line">//console </span><br><span class="line">//node commander.js -V</span><br><span class="line">0.0.1</span><br><span class="line">program.version(&#x27;0.0.1&#x27;,&#x27;-v,--version&#x27;).parse(process.argv);</span><br><span class="line">//console </span><br><span class="line">//node commander.js -v or --version</span><br><span class="line">0.0.1</span><br></pre></td></tr></table></figure><h3 id="option"><a href="#option" class="headerlink" title="option"></a>option</h3><p>Commander 使用<code>.option()</code> 方法来定义选项，同时可以附加选项的简介。每个选项可以定义一个短选项名称（-后面接单个字符）和一个长选项名称（–后面接一个或多个单词），使用逗号、空格或<code>|</code>分隔。</p><p>选项可以通过在<code>Command</code>对象上调用<code>.opts()</code>方法来获取。对于多个单词的长选项，使用驼峰法获取，例如<code>--template-engine</code>选项通过<code>program.opts().templateEngine</code>获取。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">program</span><br><span class="line">  .version(&#x27;0.0.1&#x27;, &#x27;-v, --version&#x27;)</span><br><span class="line">  .option(&#x27;-d, --debug&#x27;, &#x27;debug&#x27;)</span><br><span class="line">  .option(&#x27;-s, --small&#x27;, &#x27;small&#x27;)</span><br><span class="line">  .option(&#x27;-p, --type &lt;type&gt;&#x27;, &#x27;type&#x27;)</span><br><span class="line"></span><br><span class="line">program.parse(process.argv)</span><br><span class="line"></span><br><span class="line">const options = program.opts()</span><br><span class="line">if (options.debug) console.log(options)</span><br><span class="line">console.log(&#x27;details:&#x27;)</span><br><span class="line">if (options.small) console.log(&#x27;- small&#x27;)</span><br><span class="line">if (options.type) console.log(`- $&#123;options.type&#125;`)</span><br><span class="line"></span><br><span class="line">//node commander.js -h</span><br><span class="line">Usage: commander [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -v, --version      output the version number</span><br><span class="line">  -d, --debug        debug</span><br><span class="line">  -s, --small        small</span><br><span class="line">  -p, --type &lt;type&gt;  type</span><br><span class="line">  -h, --help         display help for command</span><br><span class="line"></span><br><span class="line">//node commander -d</span><br><span class="line">&#123;debug:true&#125;</span><br><span class="line">details:</span><br><span class="line"></span><br><span class="line">//node comander -d -s </span><br><span class="line">&#123;debug:true,small:true&#125;</span><br><span class="line">details:</span><br><span class="line">- smaill </span><br><span class="line"></span><br><span class="line">//node comander -d -s -t chinese</span><br><span class="line">&#123;debug:true,small:true,type:chinese&#125;</span><br><span class="line">details:</span><br><span class="line">- smaill </span><br><span class="line">- chinese</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>选项可以设置默认值</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//选项可以设置一个默认值。</span><br><span class="line">program</span><br><span class="line">  .option(&#x27;-c, --cheese &lt;type&gt;&#x27;, &#x27;add the specified type of cheese&#x27;, &#x27;blue&#x27;);</span><br><span class="line">program.parse();</span><br><span class="line"></span><br><span class="line">console.log(`cheese: $&#123;program.opts().cheese&#125;`);</span><br></pre></td></tr></table></figure><h4 id="其他的选项类型"><a href="#其他的选项类型" class="headerlink" title="其他的选项类型"></a>其他的选项类型</h4><p><strong>取反选项</strong><br>可以定义一个以<code>no-</code>开头的<code>boolean</code>型长选项。在命令行中使用该选项时，会将对应选项的值置为false。当只定义了带<code>no-</code>的选项，未定义对应不带<code>no-</code>的选项时，该选项的默认值会被置为true。</p><p>如果已经定义了<code>--foo</code>，那么再定义<code>--no-foo</code>并不会改变它本来的默认值。可以为一个<code>boolean</code>类型的选项指定一个默认的布尔值，在命令行里可以重写它的值。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">program</span><br><span class="line">  .version(&#x27;0.0.1&#x27;, &#x27;-v, --version&#x27;)</span><br><span class="line">  .option(&#x27;-o, --option&#x27;,&#x27;show options&#x27;)</span><br><span class="line">  .option(&#x27;--no-gf&#x27;, &#x27;no object&#x27;)</span><br><span class="line"></span><br><span class="line">program.parse(process.argv)</span><br><span class="line"></span><br><span class="line">const options = program.opts()</span><br><span class="line">if (options.option) console.log(options)</span><br><span class="line">//node commander -o</span><br><span class="line">&#123; gf: true, option: true &#125;</span><br><span class="line">//node commander -o --no-gf</span><br><span class="line">&#123; gf: false, option: true &#125;</span><br></pre></td></tr></table></figure><p><strong>选项的参数使用方括号声明表示参数是可选参数（如 <code>--optional [value]</code>）。</strong></p><p>该选项在不带参数时可用作boolean选项，在带有参数时则从参数中得到值。</p><p><strong>选项的参数使用尖括号声明表示参数是必填参数（如 <code>--optional &lt;value&gt;</code>）。</strong></p><p>必填选项要么设有默认值，要么必须在命令行中输入，对应的属性字段在解析时必定会有赋值。该方法其余参数与<code>.option</code>一致。</p><p><strong>选项的参数使用…前缀表示参数是变长参数（如<code>--optional &lt;...value&gt;</code>)。</strong></p><p>在命令行中，用户可以输入多个参数，解析后会以数组形式存储在对应属性字段中。在输入下一个选项前（-或–开头），用户输入的指令均会被视作变长参数。与普通参数一样的是，可以通过<code>--</code>标记当前命令的结束。</p><p><strong>其他选项配置</strong></p><p>大多数情况下，选项均可通过<code>.option()</code>方法添加。但对某些不常见的用例，也可以直接构造<code>Option</code>对象，对选项进行更详尽的配置。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">const &#123; program, Option &#125; = require(&#x27;commander&#x27;)</span><br><span class="line"></span><br><span class="line">program</span><br><span class="line">  .addOption(new Option(&#x27;-s, --secret&#x27;).hideHelp())</span><br><span class="line">  .addOption(</span><br><span class="line">    new Option(&#x27;-t, --timeout &lt;delay&gt;&#x27;, &#x27;timeout in seconds&#x27;).default(</span><br><span class="line">      60,</span><br><span class="line">      &#x27;one minute&#x27;</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line">  .addOption(</span><br><span class="line">    new Option(&#x27;-d, --drink &lt;size&gt;&#x27;, &#x27;drink size&#x27;).choices([</span><br><span class="line">      &#x27;small&#x27;,</span><br><span class="line">      &#x27;medium&#x27;,</span><br><span class="line">      &#x27;large&#x27;,</span><br><span class="line">    ])</span><br><span class="line">  )</span><br><span class="line">program.parse()</span><br><span class="line">console.log(&#x27;Options: &#x27;, program.opts());</span><br><span class="line"></span><br><span class="line">//node commander --help</span><br><span class="line">Usage: commander [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -t, --timeout &lt;delay&gt;  timeout in seconds (default: one minute)</span><br><span class="line">  -d, --drink &lt;size&gt;     drink size (choices: &quot;small&quot;, &quot;medium&quot;, &quot;large&quot;)</span><br><span class="line">  -h, --help             display help for command</span><br><span class="line">  </span><br><span class="line">//node commander -s</span><br><span class="line">Options:  &#123; timeout: 60, secret: true &#125;</span><br><span class="line"></span><br><span class="line">//node commander -d big</span><br><span class="line">error: option &#x27;-d, --drink &lt;size&gt;&#x27; argument &#x27;big&#x27; is invalid. Allowed choices are small, medium, large.</span><br></pre></td></tr></table></figure><p><strong>自定义选项处理</strong></p><p>选项的参数可以通过自定义函数来处理，该函数接收两个参数：用户新输入的参数值和当前已有的参数值（即上一次调用自定义处理函数后的返回值），返回新的选项参数值。</p><p>自定义函数适用场景包括参数类型转换，参数暂存，或者其他自定义处理的场景。</p><p><strong>有点多，时间原因不每一个都看完了</strong></p><p><strong>把常用的看了理解了</strong></p><p><strong>总不能一次性把所有知识全学完吧</strong></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> AntDesignVue源码学习，前端，node </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>xmrig挖矿病毒</title>
+      <link href="/xmrig/"/>
+      <url>/xmrig/</url>
+      
+        <content type="html"><![CDATA[<p>昨天博客搭完突然连不上服务器了，开始以为是网的问题，后来查看阿里控制台，发现内存占用达到100%</p><p><img src="/images/0722_1.jpg" alt="阿里云控制台图片"></p><p>心想可能中病毒了，好不容易连接上服务器，输入</p><p><code>[root@archyInk]# top</code> </p><p><img src="/images/0722_2.jpg" alt="大战过后，只有到网上找图了"><br>发现一个叫xmrig的进程占用了100%，查了一下是挖矿病毒。</p><p>气死了，矿佬连我2g小水管都不放过。</p><p>kill进程发现没啥用，会自动重启</p><p>查了下网上同样的情况，一般都是在docker容器中运行的，但是我没有用过docker，所以推测是直接植入的程序，于是输入<code>ll /proc/14454/exe</code>中间是pid找到进程的程序，是一个叫skypool的文件夹，搜了一个是一个叫天池的矿池。</p><p>于是我直接把这个文件夹<code>rm -rf</code>了，然后直接重启服务器</p><p>果然病毒没有重启了</p><p>花了我不少时间，气死我了，不让我买电脑就算了，还搞这档事，矿佬都给我去spa。</p><p>最后把skypool的自启动删除了，具体的我也是查的</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 服务器，记事 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>colorful工具</title>
+      <link href="/colorful/"/>
+      <url>/colorful/</url>
+      
+        <content type="html"><![CDATA[<h3 id="colorful"><a href="#colorful" class="headerlink" title="colorful"></a>colorful</h3><p>antd-tools/cli/index.js里面有<code>require(&#39;colorful&#39;).colorful()</code></p><p>npm里有介绍，是在终端里显示颜色的</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;colorful&#x27;</span>).colorful()</span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;colorful&#x27;</span>).isatty = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;hello&#x27;</span>.to.red.color);</span><br></pre></td></tr></table></figure><p>终端显示就是红色的hello，具体用法暂时不去了解，但是很cool</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> AntDesignVue源码学习 </tag>
+            
+            <tag> 前端 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>开始</title>
+      <link href="/start/"/>
+      <url>/start/</url>
+      
+        <content type="html"><![CDATA[<p>最近开始想把自己工作常用的组件封装成一个组件库<br>于是准备学习一下AntDesignVue的源码<br>顺便巩固一下vue3的知识<br>所以临时开了个Hexo博客<br>记录一下自己学习的笔记</p><p>顺便当个qq空间</p><p><em>#オリジナル Living with a hobby - くっか的插画</em></p><p><img src="/images/0721.jpg" alt="#オリジナル Living with a hobby - くっか的插画"></p><p><a href="https://github.com/vueComponent/ant-design-vue">AntDesignVue</a><br><a href="https://github.com/ArchyInk/Archy-UI">ArchyUI</a><br><a href="https://github.com/ArchyInk/">follow</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> AntDesignVue源码学习 </tag>
+            
+            <tag> 前端 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
