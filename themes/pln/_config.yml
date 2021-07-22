@@ -1,0 +1,31 @@
+logo: Archy # top-left logo in index page
+
+more: # more links at top right index page
+  home: /index.html
+  Github: https://github.com/ArchyInk/
+
+footer_info: Archy # about info at right foot
+about: # about link at right foot
+  title: Theme Pln
+  link: https://github.com/gaoryrt/hexo-theme-pln
+
+excerpt_num: 120
+
+toc: true
+
+latex: true
+
+favicon: /favicon.ico
+
+# If you want to use valine,you should get the appId and appKey form https://leancloud.cn ,more setting please see https://valine.js.org
+valine:
+  enable: true # !!if you want use valine comment system,please set enable: true
+  appId: jJxawhsA9MlKshRc5QmWL4xI-gzGzoHsz #your leancloud appId
+  appKey: 90UiFlA2GhQlFCkSu8Vo717u #your leancloud appKey
+  guest_info: nick,mail,link #valine comment header info
+  placeholder: 你说什么 # valine comment input placeholder(like: Please leave your footprints )
+  avatar: robohash # gravatar style https://valine.js.org/avatar
+  pageSize: 10 # comment list page size
+  verify: false # valine verify code (true/false)
+  notify: false # valine mail notify (true/false)
+  lang: zh-cn
