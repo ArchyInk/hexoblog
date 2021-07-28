@@ -8,12 +8,12 @@
   <meta name="google-site-verification" content="" />
   <meta name="referrer" content="unsafe-url">
   
-  <title>开始</title>
+  <title>antd-tools详解（三）</title>
   <meta name="author" content="Archy">
   <meta name="description" content="archy的博客，写点东西">
   
   
-  <meta property="og:title" content="开始"/>
+  <meta property="og:title" content="antd-tools详解（三）"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:site_name" content="ArchyInk"/>
   <link href="/apple-touch-icon-precomposed.png" sizes="180x180" rel="apple-touch-icon-precomposed">
@@ -47,19 +47,19 @@
       
   
     <h1 class="page-title center">
-        开始
+        antd-tools详解（三）
     </h1>
   
 
 
     </div>
     <div class="meta center">
-      <time datetime="2021-07-21T07:03:52.000Z" itemprop="datePublished">
+      <time datetime="2021-07-23T08:26:06.000Z" itemprop="datePublished">
   <svg class="i-calendar" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
     <path d="M2 6 L2 30 30 30 30 6 Z M2 15 L30 15 M7 3 L7 9 M13 3 L13 9 M19 3 L19 9 M25 3 L25 9"></path>
   </svg>
   &nbsp;
-  2021-07-21
+  2021-07-23
 </time>
 
 
@@ -73,22 +73,49 @@
       <path d="M2 18 L18 2 30 2 30 14 14 30 Z"></path>
     </svg>
     &nbsp;
-    <a href="/tags/AntDesignVue源码学习/">AntDesignVue源码学习</a>·<a href="/tags/前端/">前端</a>
+    <a href="/tags/AntDesignVue源码学习/">AntDesignVue源码学习</a>·<a href="/tags/前端/">前端</a>·<a href="/tags/node/">node</a>·<a href="/tags/Ant-tools/">Ant-tools</a>
 
 
     </div>
     <hr>
     
-      
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#generator-webtypes"><span class="toc-text">generator-webtypes</span></a></li></ol>
     
     <div class="picture-container">
       
     </div>
-    <p>最近开始想把自己工作常用的组件封装成一个组件库<br>于是准备学习一下AntDesignVue的源码<br>顺便巩固一下vue3的知识<br>所以临时开了个Hexo博客<br>记录一下自己学习的笔记</p>
-<p>顺便当个qq空间</p>
-<p><em>#オリジナル Living with a hobby - くっか的插画</em></p>
-<p><img src="/images/0721.jpg" alt="#オリジナル Living with a hobby - くっか的插画"></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/vueComponent/ant-design-vue">AntDesignVue</a><br><a target="_blank" rel="noopener" href="https://github.com/ArchyInk/Archy-UI">ArchyUI</a><br><a target="_blank" rel="noopener" href="https://github.com/ArchyInk/">follow</a></p>
+    <p>我突然发现</p>
+<p><code>&quot;generator-webtypes&quot;: &quot;tsc -p antd-tools/generator-types/tsconfig.json &amp;&amp; node antd-tools/generator-types/index.js&quot;</code></p>
+<p>这个工具并不是使用的<code>gulp</code>进行的任务，先看一下</p>
+<h3 id="generator-webtypes"><a href="#generator-webtypes" class="headerlink" title="generator-webtypes"></a>generator-webtypes</h3><p>看了下竟然是根据文档生成JetBrains代码提示的</p>
+<p>用法还挺复杂，还没找到文档，只有自己看了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">parseAndWrite(&#123;</span><br><span class="line">  version: pkg.version,</span><br><span class="line">  name: &#x27;types&#x27;,</span><br><span class="line">  path: path.resolve(rootPath, &#x27;./v2-doc/src/docs&#x27;),</span><br><span class="line">  // default match lang</span><br><span class="line">  test: /index\.md/,</span><br><span class="line">  outputDir: path.resolve(rootPath, &#x27;./vetur&#x27;), </span><br><span class="line">  tagPrefix: &#x27;a-&#x27;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>调用是这么调用的，<code>test</code>匹配规则我改成了<code>index.md</code>，原来是<code>es-US.md</code></p>
+<p><code>async function readMarkdown(options: Options)</code></p>
+<p>先读取markdown文档</p>
+<p>上面的调用的方法的话，那就得在<code>./v2-doc/src/docs</code>里面放文档</p>
+<p>然后formatter一下</p>
+<p>formatter方法里面做了一下几件事</p>
+<ol>
+<li>并且根据文件名生成组件名，他会直接把短横线删除并且把驼峰式转为前缀加短横线模式</li>
+<li>检索文件中的table，根据table名称来决定放在那个数组里</li>
+<li>如果table名称是API，并且里面包含了插槽（slot等)字段，会把这一行信息放进，slots[]</li>
+<li>如果table名称是API，但没有包含slot，则放进attributes[]</li>
+<li>如果table名称是events，会把事件放进，events[]</li>
+<li>如果table名称里面包含了组件名称，并且不是events，则说明是额外的子组件，则执行上面的所有流程</li>
+</ol>
+<p>挺复杂的，但意外的觉得好用，如果我不是个vscode忠实用户的话。</p>
+<p>想给vscode写一个了。</p>
+<p>就这么愉快地决定了。</p>
+<hr>
+<p>周末啦，下班啦 2021/7/23 17:37</p>
+<hr>
+<p>2021/7/26 13:45</p>
+<hr>
+<p>研究了一下，vscode根据md生成提示代码的实现并不难，vscode有当前项目提示代码的配置文件。</p>
+<p>.vscode -&gt; XXX-g.code-snippets。</p>
+<p>根据md生成相应语法的这个文件就行了。把组件库写完了再来弄这个。</p>
 
 
   </article>

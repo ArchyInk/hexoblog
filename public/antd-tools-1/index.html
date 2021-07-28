@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  <meta name="referrer" content="unsafe-url">
+  
+  <title>antd-tools详解（一）</title>
+  <meta name="author" content="Archy">
+  <meta name="description" content="archy的博客，写点东西">
+  
+  
+  <meta property="og:title" content="antd-tools详解（一）"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="ArchyInk"/>
+  <link href="/apple-touch-icon-precomposed.png" sizes="180x180" rel="apple-touch-icon-precomposed">
+  <link rel="alternate" href="/atom.xml" title="ArchyInk" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <a id="top"></a>
+  <div id="main">
+    <div class="main-ctnr">
+      <div class="behind">
+  <a href="/" class="back black-color">
+    <svg class="i-close" viewBox="0 0 32 32" width="22" height="22" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+        <path d="M2 30 L30 2 M30 30 L2 2"></path>
+    </svg>
+  </a>
+  
+    <div class="description">
+      &nbsp;Archy‘s blog
+    </div>
+    
+</div>
+
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        antd-tools详解（一）
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      <time datetime="2021-07-22T08:44:24.000Z" itemprop="datePublished">
+  <svg class="i-calendar" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path d="M2 6 L2 30 30 30 30 6 Z M2 15 L30 15 M7 3 L7 9 M13 3 L13 9 M19 3 L19 9 M25 3 L25 9"></path>
+  </svg>
+  &nbsp;
+  2021-07-22
+</time>
+
+
+
+
+
+    
+    &nbsp;
+    <svg class="i-tag" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+      <circle cx="24" cy="8" r="2"></circle>
+      <path d="M2 18 L18 2 30 2 30 14 14 30 Z"></path>
+    </svg>
+    &nbsp;
+    <a href="/tags/AntDesignVue源码学习/">AntDesignVue源码学习</a>·<a href="/tags/前端/">前端</a>·<a href="/tags/node/">node</a>·<a href="/tags/Ant-tools/">Ant-tools</a>
+
+
+    </div>
+    <hr>
+    
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#compile"><span class="toc-text">compile</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#compile-with-es"><span class="toc-text">compile-with-es</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#compile-with-lib"><span class="toc-text">compile-with-lib</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#compile-1"><span class="toc-text">compile</span></a></li></ol></li></ol></li></ol>
+    
+    <div class="picture-container">
+      
+    </div>
+    <p>首先看看antd-design-vue根目录中的<a target="_blank" rel="noopener" href="https://github.com/vueComponent/ant-design-vue/blob/next/package.json">package.json</a></p>
+<p>从中可以看到antd-tools里面使用的工具有哪些</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&quot;compile&quot;: &quot;node antd-tools/cli/run.js compile&quot;,</span><br><span class="line"></span><br><span class="line">&quot;generator-webtypes&quot;: &quot;tsc -p antd-tools/generator-types/tsconfig.json &amp;&amp; node antd-tools/generator-types/index.js&quot;,</span><br><span class="line"></span><br><span class="line">&quot;pub&quot;: &quot;node --max_old_space_size=8192 antd-tools/cli/run.js pub&quot;,</span><br><span class="line"></span><br><span class="line">&quot;pub-with-ci&quot;: &quot;node antd-tools/cli/run.js pub-with-ci&quot;,</span><br><span class="line"></span><br><span class="line">&quot;prepublish&quot;: &quot;node antd-tools/cli/run.js guard&quot;,</span><br><span class="line"></span><br><span class="line">&quot;dist&quot;: &quot;node --max_old_space_size=8192 antd-tools/cli/run.js dist&quot;,</span><br></pre></td></tr></table></figure>
+
+<p>目前看就是这6个工具</p>
+<p>根据命令语义看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">compile 编译</span><br><span class="line">generator-webtypes 初始化</span><br><span class="line">pub 发布 </span><br><span class="line">pub-with-ci 在ci下pub（不懂） </span><br><span class="line">prepublish 预发布</span><br><span class="line">dist 打包</span><br></pre></td></tr></table></figure>
+
+<p>一个个看吧</p>
+<h3 id="compile"><a href="#compile" class="headerlink" title="compile"></a>compile</h3><p>在<code>antd-tools\gulpfile.js</code>里能找到代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(</span><br><span class="line">  &#x27;compile&#x27;,</span><br><span class="line">  gulp.series(gulp.parallel(&#x27;compile-with-es&#x27;, &#x27;compile-with-lib&#x27;), done =&gt; &#123;</span><br><span class="line">    done();</span><br><span class="line">  &#125;),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><code>gulp.series()</code>和<code>gulp.parallel()</code>是gulp中的组合任务，允许将多个独立的任务组合为一个更大的操作，<code>series()</code> 和 <code>parallel()</code> 可以互相嵌套至任意深度。如果需要让任务（task）按顺序执行，请使用 <code>series()</code> 方法。对于希望以最大并发来运行的任务（tasks），可以使用 <code>parallel()</code> 方法将它们组合起来。</p>
+<p>上面的意思就是创建一个名为<code>compile</code>的任务，这个任务是先执行并发的<code>compile-with-es</code>和<code>compile-with-lib</code>，然后执行回调。(这个回调貌似不是必要的？)</p>
+<p>然后我们再来看看<code>compile-with-es</code>和<code>compile-with-lib</code></p>
+<h5 id="compile-with-es"><a href="#compile-with-es" class="headerlink" title="compile-with-es"></a>compile-with-es</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(&#x27;compile-with-es&#x27;, done =&gt; &#123;</span><br><span class="line">  console.log(&#x27;[Parallel] Compile to es...&#x27;);</span><br><span class="line">  compile(false).on(&#x27;finish&#x27;, done);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="compile-with-lib"><a href="#compile-with-lib" class="headerlink" title="compile-with-lib"></a>compile-with-lib</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(&#x27;compile-with-lib&#x27;, done =&gt; &#123;</span><br><span class="line">  console.log(&#x27;[Parallel] Compile to js...&#x27;);</span><br><span class="line">  compile().on(&#x27;finish&#x27;, done);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>看起来都是对<code>compile</code>的执行，然后来看看<code>compile</code>方法，也就是核心代码。</p>
+<h5 id="compile-1"><a href="#compile-1" class="headerlink" title="compile"></a>compile</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">function compile(modules) &#123;</span><br><span class="line">  rimraf.sync(modules !== false ? libDir : esDir);</span><br><span class="line">  const less = gulp</span><br><span class="line">    .src([&#x27;components/**/*.less&#x27;])</span><br><span class="line">    .pipe(</span><br><span class="line">      through2.obj(function (file, encoding, next) &#123;</span><br><span class="line">        this.push(file.clone());</span><br><span class="line">        if (</span><br><span class="line">          file.path.match(/\/style\/index\.less$/) ||</span><br><span class="line">          file.path.match(/\/style\/v2-compatible-reset\.less$/)</span><br><span class="line">        ) &#123;</span><br><span class="line">          transformLess(file.path)</span><br><span class="line">            .then(css =&gt; &#123;</span><br><span class="line">              file.contents = Buffer.from(css);</span><br><span class="line">              file.path = file.path.replace(/\.less$/, &#x27;.css&#x27;);</span><br><span class="line">              this.push(file);</span><br><span class="line">              next();</span><br><span class="line">            &#125;)</span><br><span class="line">            .catch(e =&gt; &#123;</span><br><span class="line">              console.error(e);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">          next();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;),</span><br><span class="line">    )</span><br><span class="line">    .pipe(gulp.dest(modules === false ? esDir : libDir));</span><br><span class="line">  const assets = gulp</span><br><span class="line">    .src([&#x27;components/**/*.@(png|svg)&#x27;])</span><br><span class="line">    .pipe(gulp.dest(modules === false ? esDir : libDir));</span><br><span class="line">  let error = 0;</span><br><span class="line">  const source = [</span><br><span class="line">    &#x27;components/**/*.js&#x27;,</span><br><span class="line">    &#x27;components/**/*.jsx&#x27;,</span><br><span class="line">    &#x27;components/**/*.tsx&#x27;,</span><br><span class="line">    &#x27;components/**/*.ts&#x27;,</span><br><span class="line">    &#x27;typings/**/*.d.ts&#x27;,</span><br><span class="line">    &#x27;!components/*/__tests__/*&#x27;,</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  const tsResult = gulp.src(source).pipe(</span><br><span class="line">    ts(tsConfig, &#123;</span><br><span class="line">      error(e) &#123;</span><br><span class="line">        tsDefaultReporter.error(e);</span><br><span class="line">        error = 1;</span><br><span class="line">      &#125;,</span><br><span class="line">      finish: tsDefaultReporter.finish,</span><br><span class="line">    &#125;),</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  function check() &#123;</span><br><span class="line">    if (error &amp;&amp; !argv[&#x27;ignore-error&#x27;]) &#123;</span><br><span class="line">      process.exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  tsResult.on(&#x27;finish&#x27;, check);</span><br><span class="line">  tsResult.on(&#x27;end&#x27;, check);</span><br><span class="line">  const tsFilesStream = babelify(tsResult.js, modules);</span><br><span class="line">  const tsd = tsResult.dts.pipe(gulp.dest(modules === false ? esDir : libDir));</span><br><span class="line">  return merge2([less, tsFilesStream, tsd, assets]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>下班了，明天再来写           2021/7/22 17:22</p>
+<hr>
+<p>继续            2021/7/23/ 10:09</p>
+<hr>
+<p><em>第一句就没看懂</em></p>
+<p><em><code>rimraf.sync(modules !== false ? libDir : esDir);</code></em></p>
+<p><em>rimraf是引入的插件<code>const rimraf = require(&#39;rimraf&#39;);</code></em></p>
+<p><em>名字很奇怪</em></p>
+<p>查了下是对rm -rf的包封装，那就不奇怪了</p>
+<p>那这句话就是对旧包的删除了</p>
+<p>不过编译的话第一步确实应该清理旧包，大意了，竟然没联想到</p>
+<p>less变量是一个较长的链式调用，得拉出来单独看看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">const less = gulp</span><br><span class="line">   .src([&#x27;components/**/*.less&#x27;])				    </span><br><span class="line">   .pipe(											</span><br><span class="line">     through2.obj(function (file, encoding, next) &#123;</span><br><span class="line">       this.push(file.clone());</span><br><span class="line">       if (</span><br><span class="line">         file.path.match(/\/style\/index\.less$/) ||</span><br><span class="line">         file.path.match(/\/style\/v2-compatible-reset\.less$/)</span><br><span class="line">       ) &#123;</span><br><span class="line">         transformLess(file.path)</span><br><span class="line">           .then(css =&gt; &#123;</span><br><span class="line">             file.contents = Buffer.from(css);</span><br><span class="line">             file.path = file.path.replace(/\.less$/, &#x27;.css&#x27;);</span><br><span class="line">             this.push(file);</span><br><span class="line">             next();</span><br><span class="line">           &#125;)</span><br><span class="line">           .catch(e =&gt; &#123;</span><br><span class="line">             console.error(e);</span><br><span class="line">           &#125;);</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">         next();</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;),</span><br><span class="line">   )</span><br><span class="line">   .pipe(gulp.dest(modules === false ? esDir : libDir));</span><br></pre></td></tr></table></figure>
+
+<p><code>gulp.src()</code>创建流，文件系统中读取文件然后生成一个 Node 流（stream）。</p>
+<p><code>.pipe() </code>方法，用于连接转换流（Transform streams）或可写流（Writable streams），我理解的是文件操作写在这里面。</p>
+<p><code>through2</code> 听说使用gulp会常用到，但我还是第一次见，是对<code>transform stream</code>封装。</p>
+<p>什么是transform stream呢，我也不知道，虽然我大学学习java出生，但看来我的java学的真的不行啊。</p>
+<p>MDN是这么说的</p>
+<blockquote>
+<p>在<code>TransformStream</code>所述的接口 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Streams_API">流API</a> 表示一组可变形的数据。</p>
+</blockquote>
+<p>看来我得专门去巩固一下node的流了,单独开个文，等会儿回来</p>
+<hr>
+<p>2021/7/23 10:55</p>
+<hr>
+<p>2021/7/23 13:50 大概的巩固了一下stream，回来继续研究antd-tools</p>
+<hr>
+<p>那么<code>through2.obj</code>里面就是对流的处理</p>
+<p>一个<code>if</code>判断，对</p>
+<p><code>file.path.match(/\/style\/index\.less$/)</code> </p>
+<p><code>file.path.match(/\/style\/v2-compatible-reset\.less$/)</code></p>
+<p>这两种匹配或逻辑成立的时候特殊判断</p>
+<p>这两种less有什么特殊的地方吗？</p>
+<p>那就要看看怎么特殊处理的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">transformLess(file.path)</span><br><span class="line">    .then(css =&gt; &#123;</span><br><span class="line">        file.contents = Buffer.from(css);</span><br><span class="line">        file.path = file.path.replace(/\.less$/, &#x27;.css&#x27;);</span><br><span class="line">        this.push(file);</span><br><span class="line">        next();</span><br><span class="line">    &#125;)</span><br><span class="line">    .catch(e =&gt; &#123;</span><br><span class="line">    	console.error(e);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>调用了<code>transformLess</code>方法</p>
+<p><code>transformLess</code>在同目录下,看来不是只有这个地方用了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function transformLess(lessFile, config = &#123;&#125;) &#123;</span><br><span class="line">  const &#123; cwd = process.cwd() &#125; = config;</span><br><span class="line">  const resolvedLessFile = path.resolve(cwd, lessFile);</span><br><span class="line"></span><br><span class="line">  let data = readFileSync(resolvedLessFile, &#x27;utf-8&#x27;);</span><br><span class="line">  data = data.replace(/^\uFEFF/, &#x27;&#x27;);</span><br><span class="line"></span><br><span class="line">  // Do less compile</span><br><span class="line">  const lessOpts = &#123;</span><br><span class="line">    paths: [path.dirname(resolvedLessFile)],</span><br><span class="line">    filename: resolvedLessFile,</span><br><span class="line">    plugins: [new NpmImportPlugin(&#123; prefix: &#x27;~&#x27; &#125;)],</span><br><span class="line">    javascriptEnabled: true,</span><br><span class="line">  &#125;;</span><br><span class="line">  return less</span><br><span class="line">    .render(data, lessOpts)</span><br><span class="line">    .then(result =&gt; postcss([autoprefixer]).process(result.css, &#123; from: undefined &#125;))</span><br><span class="line">    .then(r =&gt; &#123;</span><br><span class="line">      return r.css;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>  const &#123; cwd = process.cwd() &#125; = config;</code><br><code>const resolvedLessFile = path.resolve(cwd, lessFile);</code></p>
+<p>获取了less目录</p>
+<p>读取文件流</p>
+<p>然后<code>  data = data.replace(/^\uFEFF/, &#39;&#39;);</code>删除文件中的\uFEFF,这是个啥？</p>
+<blockquote>
+<p>文本保存时包含了BOM（Byte Order Mark，字节顺序标记，出现在文本文件头部，Unicode编码标准中用于标识文件是采用哪种格式的编码）,导致出现\uFEFF</p>
+</blockquote>
+<p>又出现一个BOM= - =</p>
+<p>接下来有句注释 <code>//Do less compile</code></p>
+<p>说明下面就是做less的编译了</p>
+<p><code>lessOpts</code>赋值就不用看了，直接看返回值<code>less.render().then().then()</code></p>
+<p>猜也能猜到是把less编译成css</p>
+<p><strong>可是咋看来看去，还是用的less的API呢，我看这么久是为了啥？</strong></p>
+<p>但中间用了个插件还是可以注意下<code>less-plugin-npm-import</code></p>
+<p>这个插件可以从npm包里面导入less</p>
+<p><em>但从两个匹配的less里面并没有看到从npm中引入的less文件</em></p>
+<p><em>不知道为什么要用这个插件？</em></p>
+<p><em>或者我没找到？</em></p>
+<p><em>做完这些，就是调用<code>gulp.dest()</code>这个写入文件系统的方法了</em></p>
+<p><em>到此链式调用理解完了</em></p>
+<p><em><strong>我真是啰嗦啊</strong></em></p>
+<p><strong>看来看去，就是对less.render的调用</strong></p>
+<p><strong>这一长串就是less的编译打包</strong></p>
+<p>回到<code>compile</code>本身</p>
+<p>接着下面分别是对</p>
+<p><code>components/**/*.@(png|svg)</code></p>
+<p><code>components/**/*.js</code></p>
+<p><code>components/**/*.jsx</code></p>
+<p><code>components/**/*.tsx</code></p>
+<p><code>components/**/*.ts</code></p>
+<p><code>typings/**/*.d.ts</code></p>
+<p><code>!components/*/__tests__/*</code></p>
+<p>的编译整理</p>
+<p>其中ts特殊处理了一下，引入了<code>const ts = require(&#39;gulp-typescript&#39;);</code></p>
+<p>然后调用<code>ts(tsConfig,&#123;&#125;)</code></p>
+<p>对错误情况进行了处理。</p>
+<p>然后进行了babel处理</p>
+<p><code> const tsFilesStream = babelify(tsResult.js, modules);</code></p>
+<p>babel化之后在写入文件</p>
+<p>babel化简单来说把 JavaScript 中 es2015/2016/2017/2046 的新语法转化为 es5，让低端运行环境(如浏览器和 node )能够认识并执行。</p>
+<p><strong>非常牛逼的工具，解决了前端工作者一大痛点。</strong></p>
+<p>最后一句话</p>
+<p><code> return merge2([less, tsFilesStream, tsd, assets]);</code></p>
+<p>把所有流按队列整合为一个流</p>
+<hr>
+<p>妈的，也不复杂的东西我怎么写了这么多，以后写文得精简了</p>
+
+
+  </article>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+    
+        <style>
+        .vcard .vimg{left:0;}
+        </style>
+        <div id="vcomment" class="vcomment" style="padding:0 6% 0 7%;"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick','mail','link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'false' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '.vcomment',
+                notify: notify,
+                verify: verify,
+                appId: "jJxawhsA9MlKshRc5QmWL4xI-gzGzoHsz",
+                appKey: "90UiFlA2GhQlFCkSu8Vo717u",
+                placeholder: "你说什么",
+                pageSize:'10',
+                avatar:'robohash',
+                lang:'zh-cn'
+            })
+        </script>
+    
+
+
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><!--
+ * @Author: Archy
+ * @Date: 2021-07-22 14:48:16
+ * @LastEditors: Archy
+ * @LastEditTime: 2021-07-28 17:02:31
+ * @FilePath: \hexoblog\themes\pln\layout\_partial\footer.ejs
+ * @description: 
+-->
+<div class="clearfix"></div>
+<div class="right-foot">
+  <div class="firstrow">
+    <a href="#top" target="_self">
+      <svg
+        class="i-caret-right"
+        viewBox="0 0 32 32"
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentcolor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="3"
+      >
+        <path d="M10 30 L26 16 10 2 Z"></path>
+      </svg>
+    </a>
+    Archy
+  </div>
+  <div class="secondrow">
+    <a target="_blank" rel="noopener" href="https://github.com/gaoryrt/hexo-theme-pln"> Theme Pln </a>
+  </div>
+</div>
+<div style="display: flex; justify-content: center">
+  <img
+    src="./images/icp.png"
+    alt="渝ICP备2021001120号-1"
+    style="width: 20px; height: 20px; display: inline-block;position: inherit;"
+  />
+  <a
+    style="font-size: 14px"
+    target="_blank" rel="noopener" href="https://beian.miit.gov.cn/?spm=a2c4g.11186623.J_9220772140.110.271546f3sYZl2f#/Integrated/index"
+    >渝ICP备2021001120号-1</a
+  >
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.min.js"></script>
+<script type="text/javascript">
+
+// disqus scripts
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>

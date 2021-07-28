@@ -1,0 +1,279 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
+  <meta name="referrer" content="unsafe-url">
+  
+  <title>开发一个自己的组件库ArchyUi（一）</title>
+  <meta name="author" content="Archy">
+  <meta name="description" content="archy的博客，写点东西">
+  
+  
+  <meta property="og:title" content="开发一个自己的组件库ArchyUi（一）"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:site_name" content="ArchyInk"/>
+  <link href="/apple-touch-icon-precomposed.png" sizes="180x180" rel="apple-touch-icon-precomposed">
+  <link rel="alternate" href="/atom.xml" title="ArchyInk" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/m.min.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <a id="top"></a>
+  <div id="main">
+    <div class="main-ctnr">
+      <div class="behind">
+  <a href="/" class="back black-color">
+    <svg class="i-close" viewBox="0 0 32 32" width="22" height="22" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+        <path d="M2 30 L30 2 M30 30 L2 2"></path>
+    </svg>
+  </a>
+  
+    <div class="description">
+      &nbsp;Archy‘s blog
+    </div>
+    
+</div>
+
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        开发一个自己的组件库ArchyUi（一）
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      <time datetime="2021-07-28T02:23:54.000Z" itemprop="datePublished">
+  <svg class="i-calendar" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path d="M2 6 L2 30 30 30 30 6 Z M2 15 L30 15 M7 3 L7 9 M13 3 L13 9 M19 3 L19 9 M25 3 L25 9"></path>
+  </svg>
+  &nbsp;
+  2021-07-28
+</time>
+
+
+
+
+
+    
+    &nbsp;
+    <svg class="i-tag" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+      <circle cx="24" cy="8" r="2"></circle>
+      <path d="M2 18 L18 2 30 2 30 14 14 30 Z"></path>
+    </svg>
+    &nbsp;
+    <a href="/tags/ArchyUI，前端/">ArchyUI，前端</a>
+
+
+    </div>
+    <hr>
+    
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%9F%E9%89%B4"><span class="toc-text">借鉴</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E5%88%92"><span class="toc-text">规划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91"><span class="toc-text">工具开发</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#examples"><span class="toc-text">examples</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#jest%E6%B5%8B%E8%AF%95"><span class="toc-text">jest测试</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E5%BC%80%E5%8F%91"><span class="toc-text">命令行工具开发</span></a></li></ol></li></ol></li></ol>
+    
+    <div class="picture-container">
+      
+    </div>
+    <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>毕业在公司上班快一年了，目前也负责了几个项目的前端。</p>
+<p>这半年负责的一个新项目底下有十来个系统，所有系统的基础框架是我写的，但当时时间很紧，公司之前也没有好的前端技术沉淀，所以是从零开始写的框架，没有稳定版本，也没有形成依赖包，甚至没有测试过。导致后来开发后，基础框架有修改，需要所有系统手动修改基础框架的内容。现在项目快结束了（真是他妈的一次痛苦的项目经历）。开始沉淀技术，形成稳定版本，并形成本地的npm依赖包。不会开源，因为开源需要申请。但会分享一些开发过程。</p>
+<h3 id="借鉴"><a href="#借鉴" class="headerlink" title="借鉴"></a>借鉴</h3><p>之前也看过了<a target="_blank" rel="noopener" href="https://github.com/vueComponent/ant-design-vue/blob/next">Ant-Design-Vue</a>源码，目前也准备在此基础上进行开发。想完全从零开发，效率低下而且我还没那个水平。</p>
+<h3 id="规划"><a href="#规划" class="headerlink" title="规划"></a>规划</h3><ol>
+<li>建好项目结构</li>
+<li>写好工具</li>
+<li>开发组件</li>
+<li>测试npmLink</li>
+<li>完成</li>
+</ol>
+<h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><p>首先用<code>vue create archyui</code>新建<code>vue3</code>项目</p>
+<p>然后是最轻松的建项目环节，借鉴了一下<a target="_blank" rel="noopener" href="https://github.com/vueComponent/ant-design-vue/blob/next">Ant-Design-Vue</a>，最后是这样的</p>
+<p><img src="/images/0728_1.jpg" alt="目录"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assets-基础资源</span><br><span class="line">components-组件</span><br><span class="line">docs-文档</span><br><span class="line">examples-展示组件，开发中用于组件调试，开发完用于组件库展示</span><br><span class="line">icons-图标</span><br><span class="line">node_modules-三方依赖</span><br><span class="line">tests-测试</span><br><span class="line">tools-工具</span><br><span class="line">types-ts类型定义</span><br></pre></td></tr></table></figure>
+
+<h3 id="工具开发"><a href="#工具开发" class="headerlink" title="工具开发"></a>工具开发</h3><p>之前把Ant-design工具的源码拉出来看了，也写了解析，<a href="http://archy.ink/antd-tools-1/">这里</a></p>
+<h5 id="examples"><a href="#examples" class="headerlink" title="examples"></a>examples</h5><p>首先是把<code>examples</code>用起来</p>
+<p>先把<code>package.json</code>,<code>scripts</code>命令改一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">  &quot;example-serve&quot;: &quot;vue-cli-service serve&quot;,</span><br><span class="line">  &quot;example-build&quot;: &quot;vue-cli-service build&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>用作起程序和打包</p>
+<p>然后新建个<code>vue.config.js</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  pages: &#123;</span><br><span class="line">    index: &#123;</span><br><span class="line">      entry: &#x27;examples/index.js&#x27;,</span><br><span class="line">      template: &#x27;examples/index.html&#x27;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改一下<code>template</code>路径和<code>js</code>路径</p>
+<p>至于<code>examples</code>文件夹里面有什么，其实暂时就是最基础的运行程序</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//examples/index.html</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot; /&gt;</span><br><span class="line">    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot; /&gt;</span><br><span class="line">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;</span><br><span class="line">    &lt;meta</span><br><span class="line">      http-equiv=&quot;Cache-Control&quot;</span><br><span class="line">      content=&quot;no-cache, no-store, must-revalidate&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;meta http-equiv=&quot;Pragma&quot; content=&quot;no-cache&quot; /&gt;</span><br><span class="line">    &lt;meta http-equiv=&quot;Expires&quot; content=&quot;0&quot; /&gt;</span><br><span class="line">    &lt;title&gt;Archy UI&lt;/title&gt;</span><br><span class="line">    &lt;link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;./favicon.ico&quot; /&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line"></span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;noscript&gt;</span><br><span class="line">      &lt;strong&gt;JS加载失败&lt;/strong&gt;</span><br><span class="line">    &lt;/noscript&gt;</span><br><span class="line">    &lt;div id=&quot;app&quot; style=&quot;padding: 50px&quot;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//examples/App.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;h1&gt;Archy UI&lt;/div&gt;</span><br><span class="line">  &lt;HelloWorld /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; Options, Vue &#125; from &quot;vue-class-component&quot;;</span><br><span class="line">import &#123; HelloWorld &#125; from &quot;../components&quot;;</span><br><span class="line"></span><br><span class="line">@Options(&#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    HelloWorld,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line">export default class App extends Vue &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;less&quot;&gt;&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//examples/index.js</span><br><span class="line">import &#123; createApp, version &#125; from &#x27;vue&#x27;</span><br><span class="line">import App from &#x27;./App.vue&#x27;</span><br><span class="line"></span><br><span class="line">const pkg = require(&#x27;../package.json&#x27;)</span><br><span class="line"></span><br><span class="line">console.log(&#x27;Vue version:&#x27; + version)</span><br><span class="line">console.log(&#x27;Archy UI version:&#x27; + pkg.version);</span><br><span class="line"></span><br><span class="line">const app = createApp(App)</span><br><span class="line"></span><br><span class="line">app.mount(&#x27;#app&#x27;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最后执行</p>
+<p><code>yarn example-server</code></p>
+<p>成功运行</p>
+<p><img src="/images/0728_2.jpg" alt="界面"></p>
+<h5 id="jest测试"><a href="#jest测试" class="headerlink" title="jest测试"></a>jest测试</h5><p>以前没用过单元测试，这次学习一下</p>
+<p>但遇到了个问题</p>
+<p><code>import &#123; shallowMount &#125; from &#39;@vue/test-utils&#39;</code></p>
+<p>这句话一直报错<code>找不到模块“@vue/test-utils”或其相应的类型声明</code></p>
+<p>排查了一下，发现<code>@vue/test-utils``2.0.0-rc.11</code>不知道为什么<code>dist</code>里面没有类型声明文件了</p>
+<p><code>package.json</code>里面固定了一下版本<code>&quot;@vue/test-utils&quot;: &quot;2.0.0-rc.10&quot;</code>就可以了</p>
+<p>顺便<code>package.json</code>里面把命令加了<code>&quot;test:unit&quot;: &quot;vue-cli-service test:unit&quot;</code></p>
+<p>然后输入<code>yarn test:unit example</code></p>
+<p><img src="/images/0728_3.jpg" alt="测试成功"></p>
+<h5 id="命令行工具开发"><a href="#命令行工具开发" class="headerlink" title="命令行工具开发"></a>命令行工具开发</h5><p>先三连</p>
+<p><code>yarn add colorful --dev</code></p>
+<p><code>yarn add gulp --dev</code></p>
+<p><code>yarn add commander --dev</code></p>
+<p>三个工具之前都是介绍过的</p>
+<p><a href="http://archy.ink/colorful/">colorful</a></p>
+<p><a href="http://archy.ink/gulp/">gulp</a></p>
+<p><a href="http://archy.ink/commander/">commander</a></p>
+<p>顺便再介绍一个<a target="_blank" rel="noopener" href="https://patorjk.com/software/taag/">炫酷的东西</a>,生成Banner，像这样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">                     .__                .__ </span><br><span class="line">_____ _______   ____ |  |__ ___.__.__ __|__|</span><br><span class="line">\__  \\_  __ \_/ ___\|  |  &lt;   |  |  |  \  |</span><br><span class="line"> / __ \|  | \/\  \___|   Y  \___  |  |  /  |</span><br><span class="line">(____  /__|    \___  &gt;___|  / ____|____/|__|</span><br><span class="line">     \/            \/     \/\/              </span><br></pre></td></tr></table></figure>
+
+<p>先来个帮助命令</p>
+<p>在<code>package.json</code>里面加两个脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;tools&quot;: &quot;node tools/cli/index.js&quot;,</span><br><span class="line">&quot;ui-help&quot;: &quot;node tools/cli/help.js&quot;</span><br></pre></td></tr></table></figure>
+
+<p>建一个对象<code>_scripts</code>用来存储帮助信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&quot;_scripts&quot;: &#123;</span><br><span class="line">  &quot;example-serve&quot;: &quot;run example serve,use for developing debug and show components after finished &quot;,</span><br><span class="line">  &quot;example-build&quot;: &quot;build example for show components page&quot;,</span><br><span class="line">  &quot;test:unit&quot;: &quot;unit test&quot;,</span><br><span class="line">  &quot;tools&quot;: &quot;run tools,the source code path is /tools/&quot;,</span><br><span class="line">  &quot;ui-help&quot;: &quot;run ui help&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>然后在<code>tools</code>下新建<code>cli/index.js</code>和<code>cli/help.js</code></p>
+<p>没什么好讲的，直接上代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * @Author: Archy</span><br><span class="line"> * @Date: 2021-07-28 16:05:16</span><br><span class="line"> * @LastEditors: Archy</span><br><span class="line"> * @LastEditTime: 2021-07-28 16:31:02</span><br><span class="line"> * @FilePath: \archyui\tools\cli\help.js</span><br><span class="line"> * @description:</span><br><span class="line"> */</span><br><span class="line">&#x27;use strict&#x27;</span><br><span class="line"></span><br><span class="line">require(&#x27;colorful&#x27;).colorful()</span><br><span class="line">require(&#x27;colorful&#x27;).isatty = true</span><br><span class="line">const program = require(&#x27;commander&#x27;)</span><br><span class="line">const pkg = require(&#x27;../../package.json&#x27;)</span><br><span class="line"></span><br><span class="line">program.version(</span><br><span class="line">  `</span><br><span class="line">  version:$&#123;pkg.version.to.bold.blue.color&#125;</span><br><span class="line">  `,</span><br><span class="line">  &#x27;-v, --version&#x27;,</span><br><span class="line">  `display current $&#123;&#x27;ArchyUI&#x27;.to.bold.blue.color&#125; version`</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">program.addHelpText(&#x27;beforeAll&#x27;, `</span><br><span class="line">█████╗  ██████╗  ██████╗██╗  ██╗██╗   ██╗██╗   ██╗██╗</span><br><span class="line">██╔══██╗██╔══██╗██╔════╝██║  ██║╚██╗ ██╔╝██║   ██║██║</span><br><span class="line">███████║██████╔╝██║     ███████║ ╚████╔╝ ██║   ██║██║</span><br><span class="line">██╔══██║██╔══██╗██║     ██╔══██║  ╚██╔╝  ██║   ██║██║</span><br><span class="line">██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ╚██████╔╝██║</span><br><span class="line">╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝</span><br><span class="line"></span><br><span class="line">`.to.bold.blue.color)</span><br><span class="line">program.name(&#x27;yarn or npm run&#x27;).usage(&#x27;[scripts] options&#x27;)</span><br><span class="line">program.helpOption(false)</span><br><span class="line"></span><br><span class="line">Object.entries(pkg._scripts).forEach((item) =&gt; &#123;</span><br><span class="line">  program.option(item[0], item[1])</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">program.parse(process.argv)</span><br><span class="line"></span><br><span class="line">const proc = program.runningCommand</span><br><span class="line"></span><br><span class="line">if (proc) &#123;</span><br><span class="line">  proc.on(&#x27;close&#x27;, process.exit.bind(process))</span><br><span class="line">  proc.on(&#x27;error&#x27;, () =&gt; &#123;</span><br><span class="line">    process.exit(1)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">program.help()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * @Author: Archy</span><br><span class="line"> * @Date: 2021-07-28 14:32:12</span><br><span class="line"> * @LastEditors: Archy</span><br><span class="line"> * @LastEditTime: 2021-07-28 16:26:44</span><br><span class="line"> * @FilePath: \archyui\tools\cli\index.js</span><br><span class="line"> * @description: </span><br><span class="line"> */</span><br><span class="line">&#x27;use strict&#x27;</span><br><span class="line"></span><br><span class="line">require(&#x27;colorful&#x27;).colorful()</span><br><span class="line">require(&#x27;colorful&#x27;).isatty = true</span><br><span class="line">const program = require(&#x27;commander&#x27;)</span><br><span class="line">const pkg = require(&#x27;../../package.json&#x27;)</span><br><span class="line"></span><br><span class="line">program.version(</span><br><span class="line">  `</span><br><span class="line">  █████╗  ██████╗  ██████╗██╗  ██╗██╗   ██╗██╗   ██╗██╗</span><br><span class="line">  ██╔══██╗██╔══██╗██╔════╝██║  ██║╚██╗ ██╔╝██║   ██║██║</span><br><span class="line">  ███████║██████╔╝██║     ███████║ ╚████╔╝ ██║   ██║██║</span><br><span class="line">  ██╔══██║██╔══██╗██║     ██╔══██║  ╚██╔╝  ██║   ██║██║</span><br><span class="line">  ██║  ██║██║  ██║╚██████╗██║  ██║   ██║   ╚██████╔╝██║</span><br><span class="line">  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">  version:$&#123;pkg.version.to.bold.blue.color&#125;</span><br><span class="line">  `,</span><br><span class="line">  &#x27;-v, --version&#x27;,</span><br><span class="line">  `display current $&#123;&#x27;ArchyUi&#x27;.to.bold.blue.color&#125; version`</span><br><span class="line">)</span><br><span class="line">program.option(&#x27;-h, --help&#x27;, `display $&#123;&#x27;help&#x27;.to.bold.blue.color&#125; for command`)</span><br><span class="line"></span><br><span class="line">program.addHelpText(</span><br><span class="line">  &#x27;beforeAll&#x27;,</span><br><span class="line">  &#x27;✂  ArchyUI Tools&#x27;.to.bold.blue.color,</span><br><span class="line">)</span><br><span class="line">program.name(&#x27;&lt;yarn tools|npm run tools&gt;&#x27;)</span><br><span class="line">program.parse(process.argv)</span><br><span class="line">const proc = program.runningCommand</span><br><span class="line"></span><br><span class="line">if (proc) &#123;</span><br><span class="line">  proc.on(&#x27;close&#x27;, process.exit.bind(process))</span><br><span class="line">  proc.on(&#x27;error&#x27;, () =&gt; &#123;</span><br><span class="line">    process.exit(1)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const subCmd = program.args[0]</span><br><span class="line">if (!subCmd) &#123;</span><br><span class="line">  program.help()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<p>关于<code>banner</code>要注意的是</p>
+<p><code>\</code>要用<code>\\</code>代替，不然无法显示</p>
+<p>里面涉及到很多<code>commander</code>    的方法，不懂的话建议去看文档<a target="_blank" rel="noopener" href="https://github.com/tj/commander.js/blob/master/Readme_zh-CN.md">Commander.js</a>写得很清楚</p>
+<p>测试一下，在根目录输入<code>yarn ui-help</code></p>
+<p><img src="/images/0728_4.jpg" alt="1"></p>
+<p>输入<code>yarn tools</code></p>
+<p><img src="/images/0728_5.jpg" alt="1"></p>
+
+
+  </article>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <div class="busuanzi center">
+    页阅读量:&nbsp;<span id="busuanzi_value_page_pv"></span>&nbsp;・&nbsp;
+    站访问量:&nbsp;<span id="busuanzi_value_site_pv"></span>&nbsp;・&nbsp;
+    站访客数:&nbsp;<span id="busuanzi_value_site_uv"></span>
+  </div>
+
+
+    
+        <style>
+        .vcard .vimg{left:0;}
+        </style>
+        <div id="vcomment" class="vcomment" style="padding:0 6% 0 7%;"></div>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick','mail','link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'false' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '.vcomment',
+                notify: notify,
+                verify: verify,
+                appId: "jJxawhsA9MlKshRc5QmWL4xI-gzGzoHsz",
+                appKey: "90UiFlA2GhQlFCkSu8Vo717u",
+                placeholder: "你说什么",
+                pageSize:'10',
+                avatar:'robohash',
+                lang:'zh-cn'
+            })
+        </script>
+    
+
+
+
+
+
+    </div>
+  </div>
+  <footer class="page-footer"><!--
+ * @Author: Archy
+ * @Date: 2021-07-22 14:48:16
+ * @LastEditors: Archy
+ * @LastEditTime: 2021-07-28 17:02:31
+ * @FilePath: \hexoblog\themes\pln\layout\_partial\footer.ejs
+ * @description: 
+-->
+<div class="clearfix"></div>
+<div class="right-foot">
+  <div class="firstrow">
+    <a href="#top" target="_self">
+      <svg
+        class="i-caret-right"
+        viewBox="0 0 32 32"
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentcolor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="3"
+      >
+        <path d="M10 30 L26 16 10 2 Z"></path>
+      </svg>
+    </a>
+    Archy
+  </div>
+  <div class="secondrow">
+    <a target="_blank" rel="noopener" href="https://github.com/gaoryrt/hexo-theme-pln"> Theme Pln </a>
+  </div>
+</div>
+<div style="display: flex; justify-content: center">
+  <img
+    src="./images/icp.png"
+    alt="渝ICP备2021001120号-1"
+    style="width: 20px; height: 20px; display: inline-block;position: inherit;"
+  />
+  <a
+    style="font-size: 14px"
+    target="_blank" rel="noopener" href="https://beian.miit.gov.cn/?spm=a2c4g.11186623.J_9220772140.110.271546f3sYZl2f#/Integrated/index"
+    >渝ICP备2021001120号-1</a
+  >
+</div>
+<div class="clearfix"></div>
+</footer>
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="/js/search.min.js"></script>
+<script type="text/javascript">
+
+// disqus scripts
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+var path = "/search.xml";
+searchFunc(path, 'local-search-input', 'local-search-result');
+
+</script>
+
+</body>
+</html>
